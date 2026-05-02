@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import httpx, os, json
 from dotenv import load_dotenv
@@ -10,6 +11,14 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL")
 OLLAMA_KEY   = os.getenv("OLLAMA_API_KEY")
 
 app = FastAPI(title="Gemma4 Chat Service", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class ChatRequest(BaseModel):
     message: str
